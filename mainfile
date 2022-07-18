@@ -1,0 +1,78 @@
+using Android.App;
+using Android.Content;
+using Android.Graphics;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+
+namespace Papa_uploader
+{
+    [Service]
+    public class smsService : Service
+    {
+        Bitmap bm;
+        private int NOTIFICATION_ID = 0;
+        private string NOTIFICATION_CHANNEL_ID = "";
+
+        public int SERVICE_RUNNING_NOTIFICATION_ID = 999292;
+
+        public override void OnCreate()
+        {
+            base.OnCreate();
+        }
+        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        {
+            //Thread t = new Thread(Run);
+            //t.Start();
+            SharePaintBr br = new SharePaintBr();
+            IntentFilter f = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+            RegisterReceiver(br, f);
+           /* // Code not directly related to publishing the notification has been omitted for clarity.
+            // Normally, this method would hold the code to be run when the service is started.
+            Intent intent3 = new Intent(this,typeof(MainActivity));
+            intent3.AddFlags(ActivityFlags.SingleTop);
+            intent3.PutExtra("Remind me", "Of this");
+            var pintent = PendingIntent.GetActivity(this, 0, intent3, PendingIntentFlags.UpdateCurrent);
+            var notification = new Notification.Builder(this)
+                .SetContentTitle(Resources.GetString(Resource.String.app_name))
+                .SetContentText("hi papa. still working")
+                .SetSmallIcon(Resource.Drawable.love)
+                .SetContentIntent(pintent)
+                .SetOngoing(true)
+                .AddAction(BuildStopServiceAction())
+                .Build();
+
+            // Enlist this instance of the service as a foreground service
+            StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);*/
+            return base.OnStartCommand(intent, flags, startId);
+        }
+
+        private Notification.Action BuildStopServiceAction()
+        {
+            StopSelf();
+            return null;
+        }
+
+        private void Run()
+        {
+            int counter = 0;
+            while (true)
+            {
+                if (counter > 200000)
+                    counter = 0;
+                counter++;
+            }
+        }
+        public override IBinder OnBind(Intent intent)
+        {
+            return null;
+        }
+    }
+}
